@@ -1,0 +1,28 @@
+@import "tailwindcss";
+@import "@radix-ui/themes/styles.css";
+
+.navbar {
+    @apply flex items-center justify-between h-[4rem] border-b border-slate-200;
+
+    .navbar-logo {
+        @apply flex items-center gap-[0.6rem];
+
+        p {
+            @apply text-blue-500 text-[1.4rem];
+        }
+    }
+
+    .navbar-buttons {
+        @apply flex items-center gap-[0.8rem] h-full;
+
+        .navbar-buttons-fonts{
+            button {
+                @apply py-[0.4rem] border-none shadow-none w-[8rem] outline-none;
+            }
+        }
+
+       
+    }
+
+
+}
