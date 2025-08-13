@@ -16,6 +16,10 @@ body{
   @apply flex flex-col items-center justify-center;
 }
 
+input{
+  @apply outline-none;
+}
+
 .wrapper-container{
    @apply w-screen min-h-[100vh] px-[1rem] md:w-[60vw];
 }
