@@ -3,32 +3,54 @@ import { useEffect,useState } from 'react';
 import {fetchApi} from '../../hook/useFetchApi';
 import './SearchInput.css'
 import { Search } from 'lucide-react';
+import { DictionaryContext } from '@/context/DictionaryContext';
+ 
 // import WordsContext from '../../context/WordsContext'
-
 const SearchInput = () => {
-    const [inputState,setInputState] = useState<string>('')
-    const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${inputState}`;
-    const {data, error} = fetchApi(url);
+  const [inputState, setInputState] = useState<string>("");
+  const [url, setUrl] = useState<string>("");
+  const { word, addWord } = useContext(DictionaryContext);
 
-    // const words = useContext(WordsContext)
+ 
+    const { data, error } = fetchApi(url);
 
-    if(data){
-        console.log(Array.isArray(data))
+  const handleSearch = (inputText: string, event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      setUrl(`https://api.dictionaryapi.dev/api/v2/entries/en/${inputText}`);
+      console.log('se ejecuto')
     }
+    console.log('funciona', event.key)
+  };
 
-    const handleSearch = (inputText:string)=>{
-        console.log(inputText)
-        setInputState(inputText)
+  const handleClick = () => {
+    setUrl(`https://api.dictionaryapi.dev/api/v2/entries/en/${inputState}`);
+    console.log('clic')
+    console.log(url)
+    console.log(word)
+  };
+
+  // Cuando haya datos nuevos, los guardamos en el contexto
+  useEffect(() => {
+    if (data) {
+      addWord(data);
     }
-        
-    return (
-            <div className="search-input">
-                <input type="text" placeholder='search...' onChange={(e => handleSearch(e.target.value))}/>
-                <div className="search-input-button">
-                    <Search size={18}/>
-                </div>
-            </div>
-    )
-}
+  }, [data]);
+
+  return (
+    <form className="search-input">
+      <input
+        type="text"
+        placeholder="search..."
+        onKeyDown={(e) => handleSearch(inputState, e)}
+        onChange={(e) => setInputState(e.target.value)}
+      />
+      <div className="search-input-button" onClick={handleClick}>
+        <Search size={18} />
+      </div>
+    </form>
+  );
+};
+
 
 export default SearchInput
